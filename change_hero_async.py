@@ -24,8 +24,9 @@ class HeroData:
             files_to_process = []
             for old_filename in os.listdir(hero_dir):  # 遍历目录下的所有文件
                 files_to_process.append(old_filename)
-            # 使用异步方式处理所有文件
-            asyncio.run(self.process_files_async(files_to_process))
+            # 任务的执行实际上是在 await asyncio.gather(*tasks) 这一行发生的。这行代码会并发执行所有之前创建的任务，并等待它们全部完成
+            # 这种异步处理方式比同步方式快得多，因为它可以同时处理多个文件，而不是一个接一个地处理
+            asyncio.run(self.process_files_async(files_to_process))  # 使用异步方式处理所有文件
         except KeyboardInterrupt:
             logging.warning("操作被用户中断")
         except Exception as e:
@@ -88,7 +89,7 @@ class HeroData:
     @classmethod
     async def encipher_async(cls, file_content):  # 异步回调函数
         base64_str = cls.base64_encode(file_content)  # 进行Base64编码
-        encipher_code = cls.custom_encipher(base64_str) # 进行自定义加密
+        encipher_code = cls.custom_encipher(base64_str)  # 进行自定义加密
         await asyncio.sleep(3)  # 模拟处理数据耗时（异步版本）
         return encipher_code  # 返回处理后的数据
 
