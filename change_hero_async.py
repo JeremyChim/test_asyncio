@@ -24,8 +24,6 @@ class HeroData:
             files_to_process = []
             for old_filename in os.listdir(hero_dir):  # 遍历目录下的所有文件
                 files_to_process.append(old_filename)
-            # 任务的执行实际上是在 await asyncio.gather(*tasks) 这一行发生的。这行代码会并发执行所有之前创建的任务，并等待它们全部完成
-            # 这种异步处理方式比同步方式快得多，因为它可以同时处理多个文件，而不是一个接一个地处理
             asyncio.run(self.process_files_async(files_to_process))  # 使用异步方式处理所有文件
         except KeyboardInterrupt:
             logging.warning("操作被用户中断")
@@ -41,8 +39,9 @@ class HeroData:
             logging.info(f"正在读取文件：{old_filename}...")
             task = asyncio.create_task(self.process_single_file(old_filename))
             tasks.append(task)
-        # 等待所有任务完成
-        await asyncio.gather(*tasks)
+        # 任务的执行实际上是在 await asyncio.gather(*tasks) 这一行发生的。这行代码会并发执行所有之前创建的任务，并等待它们全部完成
+        # 这种异步处理方式比同步方式快得多，因为它可以同时处理多个文件，而不是一个接一个地处理
+        await asyncio.gather(*tasks) # 执行并等待所有任务完成
 
     async def process_single_file(self, old_filename):
         """处理单个文件"""
