@@ -96,14 +96,14 @@ class HeroData:
         base64_str = cls.base64_encode(file_content)  # 进行Base64编码
         custom_str = cls.custom_encode(base64_str)  # 进行自定义加密
         await asyncio.sleep(3)  # 模拟处理数据耗时（异步版本）
-        return base64_str  # 返回处理后的数据
+        return custom_str  # 返回处理后的数据
 
     @classmethod
-    async def decode_func_async(cls, base64_str):  # 异步回调函数
-        custom_str = cls.custom_decode(base64_str) # 进行自定义解密
-        file_content = cls.base64_decode(base64_str) # 进行Base64解码
+    async def decode_func_async(cls, custom_str):  # 异步回调函数
+        base64_str = cls.custom_decode(custom_str) # 进行自定义解密
+        decode_str = cls.base64_decode(base64_str) # 进行Base64解码
         await asyncio.sleep(3)  # 模拟处理数据耗时（异步版本）
-        return file_content  # 返回处理后的数据
+        return decode_str  # 返回处理后的数据
 
     @staticmethod
     def base64_encode(string):
